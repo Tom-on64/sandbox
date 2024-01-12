@@ -1,5 +1,8 @@
 import Element from "./Element.js";
 import Sand from "./Sand.js";
+import Smoke from "./Smoke.js";
+import Water from "./Water.js";
+import Wood from "./Wood.js";
 import { ctx, input } from "./app.js";
 
 export default class Simulation {
@@ -10,11 +13,14 @@ export default class Simulation {
         this.simSpeed = simSpeed;
 
         this.clear();
+
+        this.createElement = () => this.setCircle(input.rx, input.ry, () => new Sand(), 2, 0.5);
     }
 
     clear() {
-        /** @type {Array<Element|null>} 2d array of elements (empty = null) */
+        /** @type {Array<Element|0>} 2d array of elements (empty = 0) */
         this.buffer = new Array(this.width * this.height).fill(0)
+        this.changes = [];
     }
 
     render() {
@@ -33,29 +39,31 @@ export default class Simulation {
     }
 
     update() {
-        for (let i = this.buffer.length - 1; i > 0; i--) {
+        for (let i = 0; i < this.buffer.length; i++) {
             this.buffer[i] ? this.buffer[i].update(i) : null;
         }
+
+        for (let i = 0; i < this.changes.length; i++)
+            this.doSwap(this.changes[i]);
+        this.changes = [];
+
         this.inputUpdate();
     }
 
-    /**
-     * @param {number} x 
-     * @param {number} y 
-     * @param {Element} element 
-     */
-    set(x, y, element) {
-        this.buffer[y * this.width + x] = new element();
+    get(a) {
+        return this.buffer[a];
     }
 
-    setCircle(x, y, element, radius, chance) {
+    set(x, y, callback) {
+        this.buffer[y * this.width + x] = callback();
+    }
+
+    setCircle(x, y, callback, radius, chance) {
         for (let i = x - radius; i <= x + radius; i++) {
             for (let j = y - radius; j <= y + radius; j++) {
                 if (this.isInCircle(i, j, x, y, radius) && Math.random() < chance) {
                     const index = j * this.width + i;
-                    if (this.buffer[index] === 0) {
-                        this.buffer[index] = new element();
-                    }
+                    this.buffer[index] = callback();
                 }
             }
         }
@@ -67,10 +75,27 @@ export default class Simulation {
     }
 
     isEmpty(a) {
-        return this.buffer[a] === 0;
+        return !this.buffer[a];
+    }
+
+    canMove(a, b) {
+        if (this.isEmpty(b)) return this.isEmpty(b);
+        if (!this.buffer[a]) return false;
+
+        return this.buffer[a].passIndex > this.buffer[b].passIndex;
+    }
+
+    typeAt(a) {
+        if (!this.buffer[a]) return 0;
+        return this.buffer[a].type;
     }
 
     swap(a, b) {
+        this.changes.push([a, b]);
+    }
+
+    doSwap([a, b]) {
+        if (!this.buffer[a]) return;
         const temp = this.buffer[b];
         if (!temp && temp !== 0) return;
 
@@ -82,6 +107,19 @@ export default class Simulation {
         input.rx = Math.floor((input.mouse.x - this.pxSize / 2) / this.pxSize);
         input.ry = Math.floor((input.mouse.y - this.pxSize / 2) / this.pxSize);
 
-        if (input.mouse.left) this.setCircle(input.rx, input.ry, Sand, 2, 0.5);
+        if (input.mouse.left) this.createElement();
+
+        if (input.keys["0"])
+            this.createElement = () => this.setCircle(input.rx, input.ry, () => 0, 2, 1);
+        else if (input.keys["1"]) 
+            this.createElement = () => this.setCircle(input.rx, input.ry, () => new Sand(), 2, 0.5);
+        else if (input.keys["2"]) 
+            this.createElement = () => this.setCircle(input.rx, input.ry, () => new Wood(), 2, 1);
+        else if (input.keys["3"]) 
+            this.createElement = () => this.setCircle(input.rx, input.ry, () => new Smoke(), 2, 0.5);
+        else if (input.keys["4"]) 
+            this.createElement = () => this.setCircle(input.rx, input.ry, () => new Water(), 2, 0.5);
+
+        if (input.mouse.right) this.clear();
     }
 }

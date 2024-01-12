@@ -3,6 +3,16 @@ export const colors = {
     water: "#0a2bef", 
     wood: "#412801", 
     stone: "#6c6c7c", 
+    smoke: "#1d1c1a", 
+}
+
+export const types = {
+    none: "none", 
+    sand: "sand", 
+    water: "water", 
+    wood: "wood", 
+    stone: "stone", 
+    smoke: "smoke", 
 }
 
 export const colorNoise = (color, amount) => {

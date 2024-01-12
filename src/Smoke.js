@@ -2,18 +2,18 @@ import Element from "./Element.js";
 import { sim } from "./app.js";
 import { colorNoise, colors, types } from "./data.js";
 
-export default class Sand extends Element {
+export default class Smoke extends Element {
     constructor() {
-        super(colorNoise(colors.sand, 20), types.sand);
-        this.maxSpeed = 8;
-        this.acc = 0.4;
+        super(colorNoise(colors.smoke, 2), types.smoke);
+        this.maxSpeed = 0.5;
+        this.acc = -0.1;
         this.vel = 0;
-        this.passIndex = 3;
+        this.passIndex = 1;        
     }
 
     update(i) {
         this.updateVelocity();
-        
+
         let pos = i;
         for (let v = this.getUpdateCount(); v > 0; v--) {
             const newPos = this.move(pos);
@@ -27,16 +27,11 @@ export default class Sand extends Element {
     }
 
     move(i) {
-        const bottom = i + sim.width;
-        const bottomLeft = bottom - 1;
-        const bottomRight = bottom + 1;
-        const random = [bottomLeft, bottomRight];
+        const top = i - sim.width;
+        const topLeft = top - 1;
+        const topRight = top + 1;
+        const random = [top, topLeft, topRight];
         random.sort(() => Math.random() - 0.5);
-
-        if (sim.canMove(i, bottom)) { 
-            sim.swap(i, bottom);
-            return bottom;
-        }
 
         for (const n of random) {
             if (!sim.canMove(i, n)) continue;

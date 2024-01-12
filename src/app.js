@@ -7,6 +7,7 @@ export const ctx = canvas.getContext("2d");
 export const input = { keys: {}, mouse: { x: 0, y: 0, left: false, middle: false, right: false }}
 
 export const sim = new Simulation(96, 64, 8, 25);
+// export const sim = new Simulation(256, 196, 4, 25);
 
 const resize = () => {
     canvas.width = sim.width * sim.pxSize;
@@ -31,6 +32,7 @@ const loop = (time = 0) => {
 
 document.addEventListener("keydown", (e) => input.keys[e.key] = true);
 document.addEventListener("keyup", (e) => input.keys[e.key] = false);
+canvas.addEventListener("contextmenu", (e) => e.preventDefault());
 canvas.addEventListener("mousemove", (e) => {
     input.mouse.x = e.offsetX;
     input.mouse.y = e.offsetY;
