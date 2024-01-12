@@ -50,6 +50,16 @@ canvas.addEventListener("mouseup", (e) => {
     else if (e.button === 1) input.mouse.middle = false;
     else if (e.button === 2) input.mouse.right = false;
 });
+canvas.addEventListener("touchmove", (e) => {
+    e.preventDefault();
+    var touch = e.touches[0];
+    input.mouse.x = touch.clientX - canvas.getBoundingClientRect().left;
+    input.mouse.y = touch.clientY - canvas.getBoundingClientRect().top;
+    input.rx = Math.floor((input.mouse.x - sim.pxSize / 2) / sim.pxSize);
+    input.ry = Math.floor((input.mouse.y - sim.pxSize / 2) / sim.pxSize);
+});
+canvas.addEventListener("touchstart", () => input.mouse.left = true);
+canvas.addEventListener("touchend", () => input.mouse.left = false);
 
 createUi();
 
