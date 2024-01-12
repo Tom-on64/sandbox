@@ -1,8 +1,5 @@
 import Element from "./Element.js";
 import Sand from "./Sand.js";
-import Smoke from "./Smoke.js";
-import Water from "./Water.js";
-import Wood from "./Wood.js";
 import { ctx, input } from "./app.js";
 
 export default class Simulation {
@@ -104,22 +101,7 @@ export default class Simulation {
     }
 
     inputUpdate() {
-        input.rx = Math.floor((input.mouse.x - this.pxSize / 2) / this.pxSize);
-        input.ry = Math.floor((input.mouse.y - this.pxSize / 2) / this.pxSize);
-
         if (input.mouse.left) this.createElement();
-
-        if (input.keys["0"])
-            this.createElement = () => this.setCircle(input.rx, input.ry, () => 0, 2, 1);
-        else if (input.keys["1"]) 
-            this.createElement = () => this.setCircle(input.rx, input.ry, () => new Sand(), 2, 0.5);
-        else if (input.keys["2"]) 
-            this.createElement = () => this.setCircle(input.rx, input.ry, () => new Wood(), 2, 1);
-        else if (input.keys["3"]) 
-            this.createElement = () => this.setCircle(input.rx, input.ry, () => new Smoke(), 2, 0.5);
-        else if (input.keys["4"]) 
-            this.createElement = () => this.setCircle(input.rx, input.ry, () => new Water(), 2, 0.5);
-
         if (input.mouse.right) this.clear();
     }
 }

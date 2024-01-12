@@ -1,10 +1,11 @@
 import Simulation from "./Simulation.js";
+import { createUi } from "./ui.js";
 
 /** @type {HTMLCanvasElement} */
 const canvas = document.getElementById("display");
 export const ctx = canvas.getContext("2d");
 
-export const input = { keys: {}, mouse: { x: 0, y: 0, left: false, middle: false, right: false }}
+export const input = { keys: {}, mouse: { x: 0, y: 0, rx: 0, ry: 0, left: false, middle: false, right: false }}
 
 export const sim = new Simulation(96, 64, 8, 25);
 // export const sim = new Simulation(256, 196, 4, 25);
@@ -36,6 +37,8 @@ canvas.addEventListener("contextmenu", (e) => e.preventDefault());
 canvas.addEventListener("mousemove", (e) => {
     input.mouse.x = e.offsetX;
     input.mouse.y = e.offsetY;
+    input.rx = Math.floor((input.mouse.x - sim.pxSize / 2) / sim.pxSize);
+    input.ry = Math.floor((input.mouse.y - sim.pxSize / 2) / sim.pxSize);
 });
 canvas.addEventListener("mousedown", (e) => {
     if (e.button === 0) input.mouse.left = true;
@@ -47,6 +50,8 @@ canvas.addEventListener("mouseup", (e) => {
     else if (e.button === 1) input.mouse.middle = false;
     else if (e.button === 2) input.mouse.right = false;
 });
+
+createUi();
 
 resize();
 loop();

@@ -11,6 +11,8 @@
         #game { border: 2px white solid; }
         #controls { display: flex; flex-direction: row; align-items: center; gap: 4px; border-top: 2px white solid; }
         #controls button { border: 1px #3d3d3d solid; padding: 2px; text-align: center; }
+        #controls button:hover { scale: 105%; opacity: 70%; }
+        #controls button:active { scale: 90%; opacity: 90%; }
         canvas { image-rendering: pixelated; cursor: none; }
     </style>
     <script type="module" src="src/app.js" defer></script>
@@ -18,7 +20,7 @@
 <body>
     <div id="game">
         <canvas id="display"></canvas>
-        <!-- <div id="controls"></div> -->
+        <div id="controls"></div>
     </div>
 </body>
 </html>
