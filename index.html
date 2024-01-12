@@ -8,11 +8,12 @@
         *, ::before, ::after { padding: 0px; margin: 0px; box-sizing: border-box; }
         :root { background-color: black; }
         body { width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; }
-        canvas { image-rendering: pixelated; border: 2px white solid; }
+        #border { border: 2px white solid; }
+        canvas { image-rendering: pixelated; cursor: none; }
     </style>
     <script type="module" src="src/app.js" defer></script>
 </head>
 <body>
-    <canvas id="display"></canvas>
+    <div id="border"><canvas id="display"></canvas></div>
 </body>
 </html>

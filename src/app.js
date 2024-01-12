@@ -1,58 +1,50 @@
-import Particle from "./Particle.js";
+import Simulation from "./Simulation.js";
 
 /** @type {HTMLCanvasElement} */
-const canvas = document.getElementById('display');
-const ctx = canvas.getContext('2d');
+const canvas = document.getElementById("display");
+export const ctx = canvas.getContext("2d");
 
-// --- Constants ---
-const pixelSize = 6;
+export const input = { keys: {}, mouse: { x: 0, y: 0, left: false, middle: false, right: false }}
 
-export const width = 128;
-export const height = 96;
+export const sim = new Simulation(96, 64, 8, 25);
 
-/** @type {Particle[]} */
-export const particles = [];
-
-canvas.width = width * pixelSize;
-canvas.height = height * pixelSize;
-
-// --- Methods ---
-export const drawPixel = (x, y, color) => {
-    ctx.fillStyle = color;
-    ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+const resize = () => {
+    canvas.width = sim.width * sim.pxSize;
+    canvas.height = sim.height * sim.pxSize;
 }
 
-// --- Init ---
-const init = () => {
-    for (let y = 0; y < height; y++) {
-        particles[y] = []
-        for (let x = 0; x < height; x++) {
-            particles[y][x] = null;
-        }
-    }
-
-    // Testing
-    particles[4][8] = new Particle(4, 8, "#00ff00")
-}
-
-// --- Update ---
 let timestamp = 0;
 let timer = 0;
-const interval = 100;
-const update = (time) => {
-    const dt = (time - timestamp);
+const loop = (time = 0) => {
+    const dt = time - timestamp;
     timestamp = time;
-    requestAnimationFrame(update);
+    requestAnimationFrame(loop);
 
     timer += dt;
-    if (timer >= interval) {
-        particles.forEach(p => p.update());
-        timer = 0; 
+    if (timer >= sim.simSpeed) {
+        sim.update();
+        timer = 0;
     }
-    
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(row => row.forEach(p => p ? p.draw() : null));
+
+    sim.render();
 }
 
-init();
-update();
+document.addEventListener("keydown", (e) => input.keys[e.key] = true);
+document.addEventListener("keyup", (e) => input.keys[e.key] = false);
+canvas.addEventListener("mousemove", (e) => {
+    input.mouse.x = e.offsetX;
+    input.mouse.y = e.offsetY;
+});
+canvas.addEventListener("mousedown", (e) => {
+    if (e.button === 0) input.mouse.left = true;
+    else if (e.button === 1) input.mouse.middle = true;
+    else if (e.button === 2) input.mouse.right = true;
+});
+canvas.addEventListener("mouseup", (e) => {
+    if (e.button === 0) input.mouse.left = false;
+    else if (e.button === 1) input.mouse.middle = false;
+    else if (e.button === 2) input.mouse.right = false;
+});
+
+resize();
+loop();

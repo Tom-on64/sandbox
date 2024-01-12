@@ -1,3 +1,3 @@
 # Sandbox
 
-A simple sand simulation.
+A simple sand sim.
