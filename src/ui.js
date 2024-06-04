@@ -22,7 +22,7 @@ const elements = [
     { name: "Stone", callback: () => new Stone(), prob: 1, color: colors.stone },
     { name: "Steel", callback: () => new Steel(), prob: 1, color: colors.steel },
     { name: "Smoke", callback: () => new Smoke(), prob: 0.3, color: colors.smoke },
-    { name: "Steam", callback: () => new Steam(), prob: 0.3, color: colors.steam },
+    { name: "Steam", callback: () => new Steam(), prob: 0.4, color: colors.steam },
     { name: "Erase", callback: () => 0, prob: 1, color: "#FFFFFF" },
 ];
 
@@ -31,7 +31,7 @@ export const createUi = () => {
         const btn = document.createElement("button");
         btn.innerText = e.name;
         btn.onclick = () => {
-            sim.createElement = () => sim.setCircle(input.rx, input.ry, e.callback, 2, e.prob);
+            sim.createElement = () => sim.setCircle(input.rx, input.ry, e.callback, sim.radius, e.prob);
         };
 
         btn.style.backgroundColor = e.color;
@@ -39,4 +39,12 @@ export const createUi = () => {
 
         controls.appendChild(btn);
     })
+
+    const slider = document.createElement("input");
+    slider.type = "range";
+    slider.min = 1;
+    slider.max = 8;
+    slider.value = 2;
+    slider.oninput = (e) => sim.radius = e.target.value;
+    controls.appendChild(slider);
 }

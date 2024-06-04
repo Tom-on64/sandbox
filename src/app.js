@@ -1,7 +1,7 @@
 import Simulation from "./Simulation.js";
 import { createUi } from "./ui.js";
 
-const PX_SIZE = 4;
+const PX_SIZE = 6;
 
 /** @type {HTMLCanvasElement} */
 const canvas = document.getElementById("display");
@@ -12,7 +12,7 @@ export const input = { keys: {}, mouse: { x: 0, y: 0, rx: 0, ry: 0, left: false,
 //export const sim = new Simulation(96, 64, 8, 25);
 const width = Math.floor(window.innerWidth / (PX_SIZE + 1));
 const height = Math.floor(window.innerHeight / (PX_SIZE + 1));
-export const sim = new Simulation(width, height, PX_SIZE, 26);
+export const sim = new Simulation(width, height, PX_SIZE, 30);
 
 const resize = () => {
     canvas.width = sim.width * sim.pxSize;

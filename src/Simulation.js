@@ -8,10 +8,11 @@ export default class Simulation {
         this.height = height;
         this.pxSize = pxSize;
         this.simSpeed = simSpeed;
+        this.radius = 2;
 
         this.clear();
 
-        this.createElement = () => this.setCircle(input.rx, input.ry, () => new Sand(), 2, 0.5);
+        this.createElement = () => this.setCircle(input.rx, input.ry, () => new Sand(), this.radius, 0.5);
     }
 
     clear() {
@@ -67,8 +68,8 @@ export default class Simulation {
     }
 
     isInCircle(x, y, cX, cY, radius) {
-        const distanceSquared = (x - cX) ** 2 + (y - cY) ** 2;
-        return distanceSquared <= radius ** 2;
+        const distanceSquared = (x - cX)*(x - cX) + (y - cY)*(y - cY);
+        return distanceSquared <= radius*radius;
     }
 
     isEmpty(a) {
