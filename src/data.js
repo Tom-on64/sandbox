@@ -1,18 +1,28 @@
 export const colors = {
     sand: "#f1ef53", 
+    soil: "#2f1907",
+    sawdust: "#d3c690",
     water: "#0a2bef", 
+    lava: "#a02200",
     wood: "#412801", 
-    stone: "#6c6c7c", 
+    stone: "#636363", 
+    steel: "#989797",
     smoke: "#1d1c1a", 
+    steam: "#b8bcd4",
 }
 
 export const types = {
     none: "none", 
     sand: "sand", 
+    soil: "soil",
+    sawdust: "sawdust",
     water: "water", 
-    wood: "wood", 
+    lava: "lava",
+    wood: "wood",
     stone: "stone", 
-    smoke: "smoke", 
+    steel: "steel",
+    smoke: "smoke",
+    steam: "steam",
 }
 
 export const colorNoise = (color, amount) => {

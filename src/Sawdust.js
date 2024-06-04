@@ -1,8 +1,8 @@
 import Dust from "./Dust.js";
 import { colorNoise, colors, types } from "./data.js";
 
-export default class Sand extends Dust {
+export default class Sawdust extends Dust {
     constructor() {
-        super(colorNoise(colors.sand, 20), types.sand, 0.4);
+        super(colorNoise(colors.sawdust, 5), types.sawdust, 0.2);
     }
 }
