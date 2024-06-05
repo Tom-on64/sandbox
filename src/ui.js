@@ -16,8 +16,8 @@ const elements = [
     { name: "Sand", callback: () => new Sand(), prob: 0.5, color: colors.sand },
     { name: "Soil", callback: () => new Soil(), prob: 0.5, color: colors.soil },
     { name: "Sawdust", callback: () => new Sawdust(), prob: 0.5, color: colors.sawdust },
-    { name: "Water", callback: () => new Water(), prob: 0.5, color: colors.water },
-    { name: "Lava", callback: () => new Lava(), prob: 0.7, color: colors.lava },
+    //{ name: "Water", callback: () => new Water(), prob: 0.5, color: colors.water },
+    //{ name: "Lava", callback: () => new Lava(), prob: 0.7, color: colors.lava },
     { name: "Wood", callback: () => new Wood(), prob: 1, color: colors.wood },
     { name: "Stone", callback: () => new Stone(), prob: 1, color: colors.stone },
     { name: "Steel", callback: () => new Steel(), prob: 1, color: colors.steel },
@@ -43,8 +43,8 @@ export const createUi = () => {
     const slider = document.createElement("input");
     slider.type = "range";
     slider.min = 0;
-    slider.max = 8;
-    slider.value = 2;
+    slider.max = 18;
+    slider.value = sim.radius;
     slider.oninput = (e) => sim.radius = parseInt(e.target.value);
     controls.appendChild(slider);
 }

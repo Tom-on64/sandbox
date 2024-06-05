@@ -8,7 +8,7 @@ export default class Simulation {
         this.height = height;
         this.pxSize = pxSize;
         this.simSpeed = simSpeed;
-        this.radius = 2;
+        this.radius = 4;
 
         this.clear();
 
@@ -18,7 +18,6 @@ export default class Simulation {
     clear() {
         /** @type {Array<Element|0>} 2d array of elements (empty = 0) */
         this.buffer = new Array(this.width * this.height).fill(0)
-        this.changes = [];
     }
 
     render() {
@@ -38,13 +37,16 @@ export default class Simulation {
     }
 
     update() {
-        for (let i = 0; i < this.buffer.length; ++i) {
-            this.buffer[i] ? this.buffer[i].update(i) : null;
-        }
+        for (let row = this.height - 1; row >= 0; row--) {
+            const offset = row * this.width;
+            const direction = Math.random() > 0.5;
 
-        for (let i = 0; i < this.changes.length; ++i)
-            this.doSwap(this.changes[i]);
-        this.changes = [];
+            for (let i = 0 ; i < this.width; i++) {
+                const index = (direction ? i : -i) - 1 + this.width + offset;
+
+                this.buffer[index] ? this.buffer[index].update(index) : null;
+            }
+        }
 
         this.inputUpdate();
     }
@@ -74,12 +76,13 @@ export default class Simulation {
     }
 
     isEmpty(a) {
+        if (this.buffer[a] === undefined) return false;
         return !this.buffer[a];
     }
 
     canMove(a, b) {
-        if (this.isEmpty(b)) return this.isEmpty(b);
-        if (!this.buffer[a]) return false;
+        if (this.buffer[a] === undefined || this.buffer[b] === undefined) return false;
+        else if (this.isEmpty(b)) return true;
 
         return this.buffer[a].passIndex > this.buffer[b].passIndex;
     }
@@ -90,17 +93,11 @@ export default class Simulation {
     }
 
     swap(a, b) {
-        this.changes.push([a, b]);
-        return b;
-    }
-
-    doSwap([a, b]) {
-        if (!this.buffer[a]) return;
         const temp = this.buffer[b];
-        if (!temp && temp !== 0) return;
-
         this.buffer[b] = this.buffer[a];
         this.buffer[a] = temp;
+
+        return b;
     }
 
     inputUpdate() {
