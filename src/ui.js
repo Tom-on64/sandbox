@@ -45,6 +45,6 @@ export const createUi = () => {
     slider.min = 0;
     slider.max = 8;
     slider.value = 2;
-    slider.oninput = (e) => sim.radius = e.target.value;
+    slider.oninput = (e) => sim.radius = parseInt(e.target.value);
     controls.appendChild(slider);
 }

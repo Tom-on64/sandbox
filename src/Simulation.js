@@ -38,7 +38,7 @@ export default class Simulation {
     }
 
     update() {
-        for (let i = this.buffer.length - this.width; i > 0; --i) {
+        for (let i = 0; i < this.buffer.length; ++i) {
             this.buffer[i] ? this.buffer[i].update(i) : null;
         }
 
@@ -58,12 +58,16 @@ export default class Simulation {
     }
 
     setCircle(x, y, callback, radius, chance) {
-        let radiusSq = radius * radius;
+        const radiusSq = radius * radius;
+        const min = x - radius < 0 ? x - radius : 0;
+        const max = x + radius >= this.width ? x - this.width + 1 + radius : 0;
 
         for (let y1 = -radius; y1 <= radius; y1++) {
-            for (let x1 = -radius; x1 <= radius; x1++) {
+            for (let x1 = -radius - min; x1 <= radius - max; x1++) {
                 if (x1*x1 + y1*y1 <= radiusSq && Math.random() < chance) {
-                    this.buffer[(x+x1) + (y+y1) * this.width] = callback();
+                    const i = (x+x1) + (y+y1) * this.width;
+
+                    this.buffer[i] = callback();
                 }
             }
         }    
