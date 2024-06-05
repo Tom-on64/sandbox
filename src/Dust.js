@@ -10,37 +10,20 @@ export default class Dust extends Element {
         this.passIndex = 3;
     }
 
-    update(i) {
-        this.updateVelocity();
-        
-        let pos = i;
-        for (let v = this.getUpdateCount(); v > 0; v--) {
-            const newPos = this.move(pos);
-
-            if (newPos !== pos) pos = newPos;
-            else {
-                this.resetVelocity();
-                break;
-            }
-        }
-    }
-
     move(i) {
         const bottom = i + sim.width;
         const bottomLeft = bottom - 1;
         const bottomRight = bottom + 1;
-        const random = [bottomLeft, bottomRight];
-        random.sort(() => Math.random() - 0.5);
+        const column = i % sim.width;
 
         if (sim.canMove(i, bottom)) { 
-            sim.swap(i, bottom);
-            return bottom;
+            return sim.swap(i, bottom);
+        } else if (Math.random() > 0.5 && bottomLeft % sim.width < column && sim.canMove(i, bottomLeft)) {
+            return sim.swap(i, bottomLeft);
+        } else if (bottomRight % sim.width > column && sim.canMove(i, bottomRight)) {
+            return sim.swap(i, bottomRight);
         }
 
-        for (const n of random) {
-            if (!sim.canMove(i, n)) continue;
-            sim.swap(i, n);
-            return n;
-        }
+        return i;
     }
 }

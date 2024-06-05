@@ -9,10 +9,9 @@ export const ctx = canvas.getContext("2d");
 
 export const input = { keys: {}, mouse: { x: 0, y: 0, rx: 0, ry: 0, left: false, middle: false, right: false }}
 
-//export const sim = new Simulation(96, 64, 8, 25);
 const width = Math.floor(window.innerWidth / (PX_SIZE + 1));
 const height = Math.floor(window.innerHeight / (PX_SIZE + 1));
-export const sim = new Simulation(width, height, PX_SIZE, 30);
+export const sim = new Simulation(width, height, PX_SIZE, 26);
 
 const resize = () => {
     canvas.width = sim.width * sim.pxSize;

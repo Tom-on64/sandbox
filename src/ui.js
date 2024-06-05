@@ -42,7 +42,7 @@ export const createUi = () => {
 
     const slider = document.createElement("input");
     slider.type = "range";
-    slider.min = 1;
+    slider.min = 0;
     slider.max = 8;
     slider.value = 2;
     slider.oninput = (e) => sim.radius = e.target.value;

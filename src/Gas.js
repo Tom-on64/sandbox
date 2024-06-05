@@ -10,32 +10,20 @@ export default class Gas extends Element {
         this.passIndex = 1;        
     }
 
-    update(i) {
-        this.updateVelocity();
-
-        let pos = i;
-        for (let v = this.getUpdateCount(); v > 0; v--) {
-            const newPos = this.move(pos);
-
-            if (newPos !== pos) pos = newPos;
-            else {
-                this.resetVelocity();
-                break;
-            }
-        }
-    }
-
     move(i) {
         const top = i - sim.width;
         const topLeft = top - 1;
-        const topRight = top + 1;
-        const random = [top, topLeft, topRight];
-        random.sort(() => Math.random() - 0.5);
+        const topRight = top + 1
+        const column = i % sim.width;
 
-        for (const n of random) {
-            if (!sim.canMove(i, n)) continue;
-            sim.swap(i, n);
-            return n;
+        if (sim.canMove(i, top)) { 
+            return sim.swap(i, top);
+        } else if (Math.random() > 0.5 && topLeft % sim.width < column && sim.canMove(i, topLeft)) {
+            return sim.swap(i, topLeft);
+        } else if (topRight % sim.width > column && sim.canMove(i, topRight)) {
+            return sim.swap(i, topRight);
         }
+
+        return i;
     }
 }

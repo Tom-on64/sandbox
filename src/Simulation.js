@@ -22,7 +22,8 @@ export default class Simulation {
     }
 
     render() {
-        ctx.clearRect(0, 0, this.width * this.pxSize, this.height * this.pxSize)
+        ctx.fillStyle = "#0f0f0f";
+        ctx.fillRect(0, 0, this.width * this.pxSize, this.height * this.pxSize)
 
         for (let i = 0; i < this.buffer.length; i++) {
             const e = this.buffer[i];
@@ -37,11 +38,11 @@ export default class Simulation {
     }
 
     update() {
-        for (let i = 0; i < this.buffer.length; i++) {
+        for (let i = this.buffer.length - this.width; i > 0; --i) {
             this.buffer[i] ? this.buffer[i].update(i) : null;
         }
 
-        for (let i = 0; i < this.changes.length; i++)
+        for (let i = 0; i < this.changes.length; ++i)
             this.doSwap(this.changes[i]);
         this.changes = [];
 
@@ -57,19 +58,15 @@ export default class Simulation {
     }
 
     setCircle(x, y, callback, radius, chance) {
-        for (let i = x - radius; i <= x + radius; i++) {
-            for (let j = y - radius; j <= y + radius; j++) {
-                if (this.isInCircle(i, j, x, y, radius) && Math.random() < chance) {
-                    const index = j * this.width + i;
-                    this.buffer[index] = callback();
+        let radiusSq = radius * radius;
+
+        for (let y1 = -radius; y1 <= radius; y1++) {
+            for (let x1 = -radius; x1 <= radius; x1++) {
+                if (x1*x1 + y1*y1 <= radiusSq && Math.random() < chance) {
+                    this.buffer[(x+x1) + (y+y1) * this.width] = callback();
                 }
             }
-        }
-    }
-
-    isInCircle(x, y, cX, cY, radius) {
-        const distanceSquared = (x - cX)*(x - cX) + (y - cY)*(y - cY);
-        return distanceSquared <= radius*radius;
+        }    
     }
 
     isEmpty(a) {
@@ -90,6 +87,7 @@ export default class Simulation {
 
     swap(a, b) {
         this.changes.push([a, b]);
+        return b;
     }
 
     doSwap([a, b]) {

@@ -11,7 +11,23 @@ export default class Element {
         this.passIndex = 0;
     }
 
-    update(i) {}
+    update(i) {
+        this.updateVelocity();
+        
+        let pos = i;
+        for (let v = this.getUpdateCount(); v > 0; v--) {
+            const newPos = this.move(pos);
+
+            if (newPos !== pos) pos = newPos;
+            else {
+                this.resetVelocity();
+                break;
+            }
+        }
+    }
+
+    /* @abstract */
+    move(i) {}
 
     getUpdateCount() {
         const abs = Math.abs(this.vel);

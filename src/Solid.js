@@ -5,4 +5,8 @@ export default class Solid extends Element {
         super(color, type);
         this.passIndex = 4;
     }
+
+    move(i) { 
+        return i;
+    }
 }
