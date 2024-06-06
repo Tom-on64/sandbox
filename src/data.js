@@ -11,20 +11,6 @@ export const colors = {
     steam: "#b8bcd4",
 }
 
-export const types = {
-    none: "none", 
-    sand: "sand", 
-    soil: "soil",
-    sawdust: "sawdust",
-    water: "water", 
-    lava: "lava",
-    wood: "wood",
-    stone: "stone", 
-    steel: "steel",
-    smoke: "smoke",
-    steam: "steam",
-}
-
 export const colorNoise = (color, amount) => {
     const rgb = color.substring(1).match(/.{1,2}/g).map((hex) => parseInt(hex, 16));
 

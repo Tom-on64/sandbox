@@ -1,9 +1,6 @@
-import { types } from "./data.js";
-
 export default class Element {
-    constructor(color, type, components) {
+    constructor(color, components) {
         this.color = color;
-        this.type = type ?? types.none;
         this.components = components ?? [];
         this.passIndex = 0;
 

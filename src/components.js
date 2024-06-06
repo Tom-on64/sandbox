@@ -2,12 +2,11 @@ import Component from "./Component.js";
 import { sim } from "./app.js";
 
 export class Moves extends Component {
-    constructor(maxSpeed, acceleration, velocity, direction) {
+    constructor(maxSpeed, acceleration, velocity) {
         super();
         this.maxSpeed = maxSpeed;
         this.acc = acceleration;
         this.vel = velocity;
-        this.dir = direction ?? 1;
     }
 
     updateVelocity() {
@@ -36,7 +35,7 @@ export class Moves extends Component {
     }
 
     move(i) {
-        const pos = i + (sim.width * this.dir);
+        const pos = i + (sim.width * Math.sign(this.vel));
         const posLeft = pos - 1;
         const posRight = pos + 1;
         const column = i % sim.width;

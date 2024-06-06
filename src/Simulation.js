@@ -37,14 +37,12 @@ export default class Simulation {
     }
 
     update() {
-        for (let row = this.height - 1; row >= 0; row--) {
-            const offset = row * this.width;
-            const direction = Math.random() > 0.5;
-
-            for (let i = 0 ; i < this.width; i++) {
-                const index = (direction ? i : -i) - 1 + this.width + offset;
-
-                this.buffer[index] ? this.buffer[index].update(index) : null;
+        for (let row = this.height; row >= 0; row--) {
+            const dir = Math.random() > 0.5;
+            for (let col = 0; col < this.width; col++) {
+                const offset = dir ? col : (this.width - col - 1);
+                const i = row * this.width + offset;
+                this.buffer[i] ? this.buffer[i].update(i) : null;
             }
         }
 
