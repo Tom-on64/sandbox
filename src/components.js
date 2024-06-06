@@ -80,3 +80,28 @@ export class LimitedLife extends Component {
     }
 }
 
+export class Flows extends Component {
+    constructor(viscosity) {
+        super();
+        this.viscosity = viscosity;
+        this.stat = 0;
+    }
+
+    update(i) {
+        const bottom = i + sim.width;
+        const right = i + 1;
+        const left = i - 1;
+        const column = i % sim.width;
+
+        if (sim.canMove(i, bottom)) {
+            return sim.swap(i, bottom);
+        } else if (Math.random() > 0.5 && right % sim.width > column && sim.canMove(i, right)) {
+            this.stat++;
+            return sim.swap(i, right);
+        } else if (left % sim.width < column && sim.canMove(i, left)) {
+            this.stat--;
+            return sim.swap(i, left);
+        }
+    }
+}
+

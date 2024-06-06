@@ -1,9 +1,11 @@
 import Element from "./Element.js";
-import { sim } from "./app.js";
+import { Flows } from "./components.js";
 
 export default class Liquid extends Element {
-    constructor(color) { // TODO: Add viscosity
-        super(color);
+    constructor(color, viscosity) {
+        super(color, [
+            new Flows(viscosity),
+        ]);
         this.passIndex = 2;
     }
 }

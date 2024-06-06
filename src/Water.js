@@ -3,6 +3,6 @@ import { colorNoise, colors } from "./data.js";
 
 export default class Water extends Liquid {
     constructor() {
-        super(colorNoise(colors.water, 10));
+        super(colorNoise(colors.water, 1));
     }
 }

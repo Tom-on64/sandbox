@@ -1,7 +1,7 @@
 import Element from "./Element.js";
 import Sand from "./Sand.js";
 import { ctx, input, BG_COLOR, CURSOR_COLOR } from "./app.js";
-
+import { Flows } from "./components.js";
 export default class Simulation {
     constructor(width, height, pxSize, simSpeed) {
         this.width = width;
@@ -42,6 +42,7 @@ export default class Simulation {
             for (let col = 0; col < this.width; col++) {
                 const offset = dir ? col : (this.width - col - 1);
                 const i = row * this.width + offset;
+
                 this.buffer[i] ? this.buffer[i].update(i) : null;
             }
         }
@@ -83,9 +84,10 @@ export default class Simulation {
     }
 
     canMove(a, b) {
-        if (this.buffer[a] === undefined || this.buffer[b] === undefined) return false;
-        else if (this.isEmpty(b)) return true;
+        if (a === b) return false;
+        else if (this.buffer[a] === undefined || this.buffer[b] === undefined) return false;
 
+        if (this.isEmpty(b)) return true;
         return this.buffer[a].passIndex > this.buffer[b].passIndex;
     }
 
