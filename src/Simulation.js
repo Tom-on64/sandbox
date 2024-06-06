@@ -1,6 +1,6 @@
 import Element from "./Element.js";
 import Sand from "./Sand.js";
-import { ctx, input } from "./app.js";
+import { ctx, input, BG_COLOR, CURSOR_COLOR } from "./app.js";
 
 export default class Simulation {
     constructor(width, height, pxSize, simSpeed) {
@@ -21,7 +21,7 @@ export default class Simulation {
     }
 
     render() {
-        ctx.fillStyle = "#0f0f0f";
+        ctx.fillStyle = BG_COLOR;
         ctx.fillRect(0, 0, this.width * this.pxSize, this.height * this.pxSize)
 
         for (let i = 0; i < this.buffer.length; i++) {
@@ -32,7 +32,7 @@ export default class Simulation {
             ctx.fillRect((i % this.width) * this.pxSize, Math.floor(i / this.width) * this.pxSize, this.pxSize, this.pxSize);
         }
 
-        ctx.strokeStyle = "white";
+        ctx.strokeStyle = CURSOR_COLOR;
         ctx.strokeRect(input.rx * this.pxSize, input.ry * this.pxSize, this.pxSize, this.pxSize);
     }
 
@@ -55,6 +55,10 @@ export default class Simulation {
 
     set(x, y, callback) {
         this.buffer[y * this.width + x] = callback();
+    }
+
+    clearAt(a) {
+        this.buffer[a] = 0;
     }
 
     setCircle(x, y, callback, radius, chance) {

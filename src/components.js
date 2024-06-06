@@ -58,3 +58,25 @@ export class Moves extends Component {
         return floor + (Math.random() > rem ? 1 : 0);
     }
 }
+
+export class LimitedLife extends Component {
+    constructor(lifetime, onTick, onDeath) {
+        super();
+        this.lifetime = lifetime;
+        this.remainingLife = this.lifetime;
+        this.onTick = onTick ?? (() => {});
+        this.onDeath = onDeath ?? (() => {});
+    }
+
+    update(i) {
+        if (this.remainingLife <= 0) {
+            this.onDeath(i, this);
+            return;
+        } else {
+            this.remainingLife = Math.floor(this.remainingLife - 1);
+        }
+
+        this.onTick(i, this);
+    }
+}
+
