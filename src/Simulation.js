@@ -33,7 +33,7 @@ export default class Simulation {
         }
 
         ctx.strokeStyle = CURSOR_COLOR;
-        ctx.strokeRect(input.rx * this.pxSize, input.ry * this.pxSize, this.pxSize, this.pxSize);
+        ctx.strokeRect(input.rx * this.pxSize - 2, input.ry * this.pxSize - 2, this.pxSize + 4, this.pxSize + 4);
     }
 
     update() {

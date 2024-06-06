@@ -1,7 +1,7 @@
 import Simulation from "./Simulation.js";
 import { createUi } from "./ui.js";
 
-const PX_SIZE = 6;
+const PX_SIZE = 4;
 export const BG_COLOR = "#0f0f0f";
 export const CURSOR_COLOR = "#ccc";
 
