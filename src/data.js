@@ -7,8 +7,9 @@ export const colors = {
     wood: "#412801", 
     stone: "#636363", 
     steel: "#989797",
-    smoke: "#1f1f1f", 
+    smoke: "#222222", 
     steam: "#b8bcd4",
+    fire: "#ea5a00",
 }
 
 export const colorNoise = (color, amount) => {

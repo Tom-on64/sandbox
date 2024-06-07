@@ -1,4 +1,5 @@
 import Component from "./Component.js";
+import Smoke from "./Smoke.js";
 import { sim } from "./app.js";
 
 export class Moves extends Component {
@@ -77,6 +78,34 @@ export class LimitedLife extends Component {
         }
 
         this.onTick(i, this);
+    }
+}
+
+export class Flamable extends LimitedLife {
+    constructor(fuel, colors) {
+        fuel = fuel ?? 10 + 100 * Math.random();
+        colors = colors ?? [ // Some default colors
+            "#541e1e",
+            "#ff1f1f",
+            "#ea5a00",
+            "#ff6900",
+            "#eecc09",
+        ];
+
+        super(
+            fuel,
+            (i, b) => { // onTick
+                const freq = Math.sqrt(b.lifetime / b.remainingLife);
+                const pct = b.remainingLife / (freq * colors.length);
+                sim.buffer[i].color = colors[Math.floor(pct) % colors.length];
+            },
+            (i) => { // onDeath
+                sim.buffer[i] = new Smoke();
+            },
+        );
+
+        this.fuel = fuel;
+        this.colors = colors;
     }
 }
 
