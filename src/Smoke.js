@@ -7,10 +7,10 @@ export default class Smoke extends Gas {
     constructor() {
         super(colorNoise(colors.smoke, 2));
 
-        this.components.push(new LimitedLife(
+        this.addComponent(new LimitedLife(
             200 + 200 * Math.random(), 
             (i, b) => { // onTick()
-                const p = sim.buffer[i];
+                const p = sim.get(i);
                 if (!p) return;
                 const pct = Math.floor(b.remainingLife / b.lifetime * 256);
                 p.color = p.color.slice(0, 7) + pct.toString(16).padStart(2, '0'); // Hacky way to reduce alpha value
@@ -19,6 +19,5 @@ export default class Smoke extends Gas {
                 sim.clearAt(i);
             }
         ));
-
     }
 }

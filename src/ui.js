@@ -8,6 +8,7 @@ import Stone from "./Stone.js";
 import Steel from "./Steel.js";
 import Smoke from "./Smoke.js";
 import Steam from "./Steam.js";
+import Methane from "./Methane.js";
 import Fire from "./Fire.js";
 import { input, sim } from "./app.js";
 import { colors, invertColor } from "./data.js";
@@ -24,6 +25,7 @@ const elements = [
     { name: "Steel", callback: () => new Steel(), prob: 1, color: colors.steel },
     { name: "Smoke", callback: () => new Smoke(), prob: 0.3, color: colors.smoke },
     { name: "Steam", callback: () => new Steam(), prob: 0.4, color: colors.steam },
+    { name: "Methane", callback: () => new Methane(), prob: 0.4, color: colors.methane },
     { name: "Fire", callback: () => new Fire(), prob: 0.6, color: colors.fire },
     { name: "Erase", callback: () => 0, prob: 1, color: "#FFFFFF" },
 ];

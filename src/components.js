@@ -70,19 +70,17 @@ export class LimitedLife extends Component {
     }
 
     update(i) {
-        if (this.remainingLife <= 0) {
-            this.onDeath(i, this);
-            return;
-        } else {
+        if (this.remainingLife > 0) {
             this.remainingLife = Math.floor(this.remainingLife - 1);
+            this.onTick(i, this);
+        } else {
+            this.onDeath(i, this);
         }
-
-        this.onTick(i, this);
     }
 }
 
 export class Flamable extends LimitedLife {
-    constructor(fuel, chance, burning, colors) {
+    constructor(fuel, chance, smokeCall, burning, colors) {
         fuel = fuel ?? 10 + 100 * Math.random();
         colors = colors ?? [ // Some default colors
             "#541e1e",
@@ -91,6 +89,8 @@ export class Flamable extends LimitedLife {
             "#ff6900",
             "#eecc09",
         ];
+
+        smokeCall = smokeCall ?? (() => new Smoke());
 
         super(
             fuel,
@@ -101,7 +101,8 @@ export class Flamable extends LimitedLife {
                 sim.buffer[i].color = colors[Math.floor(pct) % colors.length];
             },
             (i) => { // onDeath
-                sim.buffer[i] = new Smoke();
+                sim.clearAt(i);
+                sim.buffer[i] = smokeCall();
             },
         );
 
@@ -137,8 +138,10 @@ export class Flamable extends LimitedLife {
                 const di = i + dx + dy * sim.width;
                 const dcol = di % sim.width
 
-                if (di >= 0 && di < sim.buffer.length && Math.abs(col - dcol) <= 1 && !sim.isEmpty(di)) {
+                if (di >= 0 && di < sim.buffer.length && Math.abs(col - dcol) <= 1) {
                     const e = sim.get(di);
+                    if (!e) continue;
+
                     const flamable = e.getComponent(Flamable);
 
                     if (flamable) {

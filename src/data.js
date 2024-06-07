@@ -7,8 +7,9 @@ export const colors = {
     wood: "#412801", 
     stone: "#636363", 
     steel: "#989797",
-    smoke: "#222222", 
+    smoke: "#2b2b2b", 
     steam: "#b8bcd4",
+    methane: "#202b30",
     fire: "#ea5a00",
 }
 
