@@ -1,7 +1,7 @@
 import Element from "./Element.js";
 import Sand from "./Sand.js";
 import { ctx, input, BG_COLOR, CURSOR_COLOR } from "./app.js";
-import { Flows } from "./components.js";
+
 export default class Simulation {
     constructor(width, height, pxSize, simSpeed) {
         this.width = width;
