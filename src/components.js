@@ -5,9 +5,9 @@ import { sim } from "./app.js";
 export class Moves extends Component {
     constructor(maxSpeed, acceleration, velocity) {
         super();
-        this.maxSpeed = maxSpeed;
-        this.acc = acceleration;
-        this.vel = velocity;
+        this.maxSpeed = maxSpeed ?? 1;
+        this.acc = acceleration ?? 1;
+        this.vel = velocity ?? 0;
     }
 
     updateVelocity() {
@@ -82,7 +82,7 @@ export class LimitedLife extends Component {
 }
 
 export class Flamable extends LimitedLife {
-    constructor(fuel, colors) {
+    constructor(fuel, chance, burning, colors) {
         fuel = fuel ?? 10 + 100 * Math.random();
         colors = colors ?? [ // Some default colors
             "#541e1e",
@@ -95,6 +95,7 @@ export class Flamable extends LimitedLife {
         super(
             fuel,
             (i, b) => { // onTick
+                if (sim.isEmpty(i)) return;
                 const freq = Math.sqrt(b.lifetime / b.remainingLife);
                 const pct = b.remainingLife / (freq * colors.length);
                 sim.buffer[i].color = colors[Math.floor(pct) % colors.length];
@@ -105,7 +106,47 @@ export class Flamable extends LimitedLife {
         );
 
         this.fuel = fuel;
+        this.burning = burning ?? false;
+        this.chance = chance;
+        this.catchChances = 0;
         this.colors = colors;
+    }
+
+    update(i) {
+        if (this.burning) {
+            super.update(i);
+            this.spread(i);
+            return;
+        }
+
+        if (this.catchChances > 0) {
+            const chance = this.chance * this.catchChances;
+
+            if (Math.random() < chance) {
+                this.burning = true;
+            }
+            this.catchChances = 0;
+        }
+    }
+
+    spread(i) {
+        const col = i % sim.width;
+        for (let dx = -1; dx <= 1; dx++) {
+            for (let dy = -1; dy <= 1; dy++) {
+                if (dx === 0 && dy === 0) continue;
+                const di = i + dx + dy * sim.width;
+                const dcol = di % sim.width
+
+                if (di >= 0 && di < sim.buffer.length && Math.abs(col - dcol) <= 1 && !sim.isEmpty(di)) {
+                    const e = sim.get(di);
+                    const flamable = e.getComponent(Flamable);
+
+                    if (flamable) {
+                        flamable.catchChances += 0.5 + Math.random() * 0.5;
+                    }
+                }
+            }
+        }
     }
 }
 

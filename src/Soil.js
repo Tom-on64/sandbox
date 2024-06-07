@@ -1,4 +1,5 @@
 import Dust from "./Dust.js";
+import { sim } from "./app.js";
 import { colorNoise, colors } from "./data.js";
 
 export default class Sand extends Dust {
